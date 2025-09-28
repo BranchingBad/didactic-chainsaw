@@ -48,6 +48,3 @@ text_to_translate = "Hello World! This is a test with 123."
 ```
 
 (Which translates back to "Hello World\! This is a test with 123.")
-
-```
-```
