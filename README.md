@@ -51,10 +51,10 @@ text_to_translate = "Hello World! This is a test with 123."
 
 -----
 
-☕ Java Classes
+## ☕ Java Classes
 These two Java classes replicate the functionality of the Python scripts, translating between standard English text and UEB Grade 1 braille using static methods.
 
-### 3.  `BrailleToTextTranslator.java'
+### 3. `BrailleToTextTranslator.java`
 This class provides the static method translateUebGrade1ToText(String uebInput) for translating UEB Grade 1 braille back into standard English text.
 
 Example Usage:
@@ -69,7 +69,7 @@ public static void main(String[] args) {
 }
 ```
 
-### 4. 'UebGrade1Translator.java'
+### 4. `UebGrade1Translator.java`
 This class provides the static method translateToUebGrade1(String text) for translating standard English text into its UEB Grade 1 braille representation.
 
 Example Usage:
