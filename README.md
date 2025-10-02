@@ -26,7 +26,7 @@ On Sept. 22, 1989, 45-year-old Sara Jane Moore dropped her son off at his San Fr
 
 -----
 
-### 2\. `text-braille-ueb-grade-1.py`
+### 2. `text-braille-ueb-grade-1.py`
 
 This script provides the function `translate_to_ueb_grade1(text)` which translates **standard English text** into its corresponding **UEB Grade 1 (uncontracted) braille representation**. It implements rules for:
 
@@ -48,3 +48,38 @@ text_to_translate = "Hello World! This is a test with 123."
 ```
 
 (Which translates back to "Hello World\! This is a test with 123.")
+
+-----
+
+☕ Java Classes
+These two Java classes replicate the functionality of the Python scripts, translating between standard English text and UEB Grade 1 braille using static methods.
+
+### 3. BrailleToTextTranslator.java
+This class provides the static method translateUebGrade1ToText(String uebInput) for translating UEB Grade 1 braille back into standard English text.
+
+Example Usage:
+To run the translation, compile and execute the class, which contains a main method with example usage:
+
+```Java
+public static void main(String[] args) {
+    String uebInput = "⠠⠕⠝⠀⠠⠎⠑⠏⠞⠲⠀⠼⠃⠃⠂⠀⠼⠁⠊⠛⠑⠲";
+    String translatedText = BrailleToTextTranslator.translateUebGrade1ToText(uebInput);
+    System.out.println("Text Output: " + translatedText);
+    // Expected Output: On Sept. 22, 1975.
+}
+```
+
+### 4. UebGrade1Translator.java
+This class provides the static method translateToUebGrade1(String text) for translating standard English text into its UEB Grade 1 braille representation.
+
+Example Usage:
+To run the translation, compile and execute the class, which contains a main method with example usage:
+
+```Java
+public static void main(String[] args) {
+    String textToTranslate = "Hello World! This is a test with 123.";
+    String brailleResult = UebGrade1Translator.translateToUebGrade1(textToTranslate);
+    System.out.println("Braille Output: " + brailleResult);
+    // Expected Output: ⠠⠓⠑⠇⠇⠕⠀⠠⠺⠕⠗⠇⠙⠖⠀⠠⠞⠓⠊⠎⠀⠊⠎⠀⠁⠀⠞⠑⠎⠞⠀⠺⠊⠞⠓⠀⠼⠁⠃⠉⠲
+}
+```
