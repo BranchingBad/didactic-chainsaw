@@ -119,10 +119,10 @@ public static void Main()
 }
 ```
 
-## 🌐 JavaScript Files
+## 🌐 JavaScript Files (Needs further testing)
 These two JavaScript files provide client-side translation functions, replicating the core UEB Grade 1 translation logic of the other implementations.
 
-### 7. BrailleToTextTranslator.js
+### 7. `BrailleToTextTranslator.js`
 This script provides the function translateUebGrade1ToText(uebInput) which translates UEB Grade 1 braille (Unicode patterns) back into standard English text, handling capitalization and the numeric indicator.
 
 #### Example Usage (from script):
@@ -133,7 +133,7 @@ console.log(`Text Output: ${translatedText}`);
 // Expected Output: On Sept. 22, 1975.
 ```
 
-### 8. UebGrade1Translator.js
+### 8. `UebGrade1Translator.js`
 This script provides the function translateToUebGrade1(text) which translates standard English text into its corresponding UEB Grade 1 (uncontracted) braille representation, including indicators for capitals and digits.
 
 #### Example Usage (from script):
