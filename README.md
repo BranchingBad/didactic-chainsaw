@@ -1,6 +1,6 @@
 # didactic-chainsaw
 
-This repository contains two Python scripts, two Java classes and two C# classes for translation between standard English text and **Unified English Braille (UEB) Grade 1 (uncontracted)**. 
+This repository contains two Python scripts, two Java classes, two C# classes and two Javascript files for translation between standard English text and **Unified English Braille (UEB) Grade 1 (uncontracted)**. 
 
 ---
 
@@ -117,4 +117,29 @@ public static void Main()
     Console.WriteLine($"Braille Output: {brailleResult}");
     // Expected Output: ⠠⠓⠑⠇⠇⠕ w⠠⠺⠕⠗⠇⠙⠖ ⠠⠞⠓⠊⠎ ⠊⠎ ⠁ ⠞⠑⠎⠞ ⠺⠊⠞⠓ ⠼⠁⠃⠉⠲
 }
+```
+
+## 🌐 JavaScript Files
+These two JavaScript files provide client-side translation functions, replicating the core UEB Grade 1 translation logic of the other implementations.
+
+### 7. BrailleToTextTranslator.js
+This script provides the function translateUebGrade1ToText(uebInput) which translates UEB Grade 1 braille (Unicode patterns) back into standard English text, handling capitalization and the numeric indicator.
+
+#### Example Usage (from script):
+```JavaScript
+const UEB_INPUT = "⠠⠕⠝⠀⠠⠎⠑⠏⠞⠲⠀⠼⠃⠃⠂⠀⠼⠁⠊⠛⠑⠲";
+let translatedText = translateUebGrade1ToText(UEB_INPUT);
+console.log(`Text Output: ${translatedText}`);
+// Expected Output: On Sept. 22, 1975.
+```
+
+### 8. UebGrade1Translator.js
+This script provides the function translateToUebGrade1(text) which translates standard English text into its corresponding UEB Grade 1 (uncontracted) braille representation, including indicators for capitals and digits.
+
+#### Example Usage (from script):
+``` JavaScript
+const textToTranslate = "Hello World! This is a test with 123.";
+const brailleResult = translateToUebGrade1(textToTranslate);
+console.log(`Braille Output: ${brailleResult}`);
+// Expected Output: ⠠⠓⠑⠇⠇⠕⠀⠠⠺⠕⠗⠇⠙⠖⠀⠠⠞⠓⠊⠎⠀⠊⠎⠀⠁⠀⠞⠑⠎⠞⠀⠺⠊⠞⠓⠀⠼⠁⠃⠉⠲
 ```
