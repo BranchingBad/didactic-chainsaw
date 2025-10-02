@@ -51,13 +51,13 @@ text_to_translate = "Hello World! This is a test with 123."
 
 -----
 
-## ☕ Java Classes
+## ☕ Java Classes (Needs further testing)
 These two Java classes replicate the functionality of the Python scripts, translating between standard English text and UEB Grade 1 braille using static methods.
 
 ### 3. `BrailleToTextTranslator.java`
 This class provides the static method translateUebGrade1ToText(String uebInput) for translating UEB Grade 1 braille back into standard English text.
 
-Example Usage:
+#### Example Usage:
 To run the translation, compile and execute the class, which contains a main method with example usage:
 
 ```Java
@@ -72,7 +72,7 @@ public static void main(String[] args) {
 ### 4. `UebGrade1Translator.java`
 This class provides the static method translateToUebGrade1(String text) for translating standard English text into its UEB Grade 1 braille representation.
 
-Example Usage:
+#### Example Usage:
 To run the translation, compile and execute the class, which contains a main method with example usage:
 
 ```Java
@@ -81,5 +81,40 @@ public static void main(String[] args) {
     String brailleResult = UebGrade1Translator.translateToUebGrade1(textToTranslate);
     System.out.println("Braille Output: " + brailleResult);
     // Expected Output: ⠠⠓⠑⠇⠇⠕⠀⠠⠺⠕⠗⠇⠙⠖⠀⠠⠞⠓⠊⠎⠀⠊⠎⠀⠁⠀⠞⠑⠎⠞⠀⠺⠊⠞⠓⠀⠼⠁⠃⠉⠲
+}
+```
+## 🖥️ C# Classes (Needs further testing)
+These two C# classes replicate the Python and Java functionality, providing static methods for UEB Grade 1 translation within the .NET environment.
+
+### 5. BrailleToTextTranslator.cs
+This static class provides the method TranslateUebGrade1ToText(string uebInput) for translating UEB Grade 1 braille back into standard English text.
+
+#### Example Usage:
+To run the translation, you can use the built-in Main method after compiling the class:
+
+```C#
+public static void Main()
+{
+    // Example from the original Python script.
+    string uebInput = "⠠⠕⠝⠀⠠⠎⠑⠏⠞⠲⠀⠼⠃⠃⠂⠀⠼⠁⠊⠛⠑⠲";
+    string translatedText = BrailleToTextTranslator.TranslateUebGrade1ToText(uebInput);
+    Console.WriteLine($"Text Output: {translatedText}");
+    // Expected Output: On Sept. 22, 1975.
+}
+```
+
+### 6. UebGrade1Translator.cs
+This static class provides the method TranslateToUebGrade1(string text) for translating standard English text into its UEB Grade 1 braille representation.
+
+#### Example Usage:
+To run the translation, you can use the built-in Main method after compiling the class:
+
+```C#
+public static void Main()
+{
+    string textToTranslate = "Hello World! This is a test with 123.";
+    string brailleResult = UebGrade1Translator.TranslateToUebGrade1(textToTranslate);
+    Console.WriteLine($"Braille Output: {brailleResult}");
+    // Expected Output: ⠠⠓⠑⠇⠇⠕ w⠠⠺⠕⠗⠇⠙⠖ ⠠⠞⠓⠊⠎ ⠊⠎ ⠁ ⠞⠑⠎⠞ ⠺⠊⠞⠓ ⠼⠁⠃⠉⠲
 }
 ```
