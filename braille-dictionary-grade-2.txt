@@ -1,4 +1,6 @@
-# Single-cell letters and basic signs
+# Updated UEB Grade 2 Dictionary (Clean Version with Additions and Corrections)
+
+# 1. Single-cell letters and basic signs
 BRAILLE_LETTERS = {
     'a': '⠁', 'b': '⠃', 'c': '⠉', 'd': '⠙', 'e': '⠑', 'f': '⠋',
     'g': '⠛', 'h': '⠓', 'i': '⠊', 'j': '⠚', 'k': '⠅', 'l': '⠇',
@@ -7,7 +9,7 @@ BRAILLE_LETTERS = {
     'y': '⠽', 'z': '⠵',
 }
 
-# Punctuation and indicators (including all standard Grade 2 UEB marks)
+# 2. Punctuation and indicators (including all standard Grade 2 UEB marks)
 PUNCTUATION_SIGNS = {
     # Basic Punctuation
     ' ': ' ', 
@@ -22,6 +24,12 @@ PUNCTUATION_SIGNS = {
 
     # Quotes
     '\"': '⠶',   # Generic Double Quote
+    
+    # Directional Quotes
+    '“': '⠦',   # Opening Outer Quote
+    '”': '⠴',   # Closing Outer Quote
+    '‘': '⠨⠦',   # Opening Inner Quote
+    '’': '⠨⠴',   # Closing Inner Quote
     
     # Grouping Punctuation
     '(': '⠐⠣',   # Opening Parenthesis (Round Bracket)
@@ -38,7 +46,9 @@ PUNCTUATION_SIGNS = {
     '...': '⠲⠲⠲', # Ellipsis
     '—': '⠤⠤',    # Em Dash (Long Dash)
     '/': '⠸⠌',    # Solidus/Forward Slash
-
+    # ADDED: Standard Ellipsis Separator
+    'cdcdcd': 'cdcdcd', # Common three-cell Ellipsis (Dots 4-4-4)
+    
     # Signs of Operation
     '+': '⠖',    # Plus Sign (Same cell as !)
     '=': '⠶',    # Equals Sign (Same cell as ")
@@ -47,75 +57,94 @@ PUNCTUATION_SIGNS = {
     '*': '⠐⠔',   # Asterisk
     '@': '⠐⠁',   # Commercial At Sign
     '$': '⠐⠎',   # Dollar Sign
-    '^': '⠐⠋',   # Caret / Circumflex Accent (Dots 5, 1-2-4)
-    '|': '⠹',    # Vertical Bar / Pipe (Dots 4-5-6, 1-2-3-6)
-    '_': '⠠⠤',   # Underscore (Dot 6, Hyphen)
-    '%': '⠨⠴',   # Percent Sign (Dots 4-6, 3-5-6)
-    '°': '⠘⠚',   # Degree Sign (Dots 4-5, 2-4-5)
+    '^': '⠐⠋',   # Caret / Circumflex Accent
+    '|': '⠹',    # Vertical Bar / Pipe
+    '_': '⠠⠤',   # Underscore
+    '%': '⠨⠴',   # Percent Sign
+    '°': '⠘⠚',   # Degree Sign
     '#': '⠸⠹',   # Number Sign (Crosshatch)
-    '&': '⠈⠯',   # Ampersand (as a print symbol, distinct from the 'and' word sign)
+    '&': '⠈⠯',   # Ampersand (as a print symbol)
     '§': '⠘⠎',   # Section Mark
     '©': '⠘⠉',   # Copyright Sign
     '®': '⠘⠗',   # Registered Sign
     '¶': '⠘⠏',   # Paragraph Sign
+    'ACCENT_SYM': '⠈', # Accent/Foreign Text Indicator (Dot 4)
+    
+    # ADDED: Transcriber's Notes
+    'OPEN_TRANSCRIBER_NOTE': '⠸⠿', # Dot 4-5-6, Dot 1-2-3-4-5-6 (all six dots)
+    'CLOSE_TRANSCRIBER_NOTE': '⠸⠹', # Dot 4-5-6, Dots 1-4-5-6 (th)
+    
+    # ADDED: Dot Locator
+    'DOT_LOCATOR': '⠐', # Dot 5 (Used to refer to a braille cell as itself)
 }
 
-# 5. Composition Signs (Indicators)
+# 3. Composition Signs (Indicators)
 BRAILLE_INDICATORS = {
     # ------------------------------------
     # Basic Indicators
     # ------------------------------------
-    'NUM': '⠼',                    # Numeric Indicator (Dots 3-4-5-6)
+    'NUM': '⠼',                    # Numeric Indicator
     'LETTER_SIGN': '⠨',              # Letter Sign/Italic Prefix (Dot 4-6)
   
     # ------------------------------------
     # Capitalization Indicators (Dot 6 based)
     # ------------------------------------
-    'CAPS': '⠠',                   # Capital Letter Indicator (Dot 6)
-    'CAPS_WORD': '⠠⠠',              # Capital Word Indicator (Dot 6, Dot 6)
-    'CAPS_PASSAGE': '⠠⠠⠠',        # Capital Passage Indicator (Dot 6, Dot 6, Dot 6)
-    'CAPS_TERMINATOR': '⠠⠄',        # Capital Passage Terminator (Dot 6, Dot 3)
+    'CAPS': '⠠',                   # Capital Letter Indicator
+    'CAPS_WORD': '⠠⠠',              # Capital Word Indicator
+    'CAPS_PASSAGE': '⠠⠠⠠',         # Capital Passage Indicator
+    'CAPS_TERMINATOR': '⠠⠄',        # Capital Passage Terminator
 
     # ------------------------------------
     # Grade 1 (Uncontracted) Indicators (Dots 5-6 based)
     # ------------------------------------
-    'G1_SYM': '⠰',                   # Grade 1 Symbol Indicator (Dots 5-6)
-    'G1_WORD': '⠰⠰',                # Grade 1 Word Indicator (Dots 5-6, 5-6)
-    'G1_PASSAGE': '⠰⠰⠰',           # Grade 1 Passage Indicator (Dots 5-6, 5-6, 5-6)
-    'G1_TERMINATOR': '⠰⠄',          # Grade 1 Passage Terminator (Dots 5-6, 3)
+    'G1_SYM': '⠰',                   # Grade 1 Symbol Indicator
+    'G1_WORD': '⠰⠰',                # Grade 1 Word Indicator
+    'G1_PASSAGE': '⠰⠰⠰',           # Grade 1 Passage Indicator
+    'G1_TERMINATOR': '⠰⠄',          # Grade 1 Passage Terminator
+    
+    'LINE_CONT_IND': '⠐⠤', # Dot 5, hyphen
 
     # ------------------------------------
     # Typeform/Emphasis Indicators (UEB Rulebook §9)
     # ------------------------------------
     # Italic Typeform (Prefix ⠨ - Dot 4-6)
-    'ITALIC_SYM': '⠨⠆',             # Italic Symbol Indicator (Dots 4-6, 2-3)
-    'ITALIC_WORD': '⠨⠂',            # Italic Word Indicator (Dots 4-6, 2)
-    'ITALIC_PASSAGE': '⠨⠶',         # Italic Passage Indicator (Dots 4-6, 2-3-5-6)
-    'ITALIC_TERMINATOR': '⠨⠄',      # Italic Terminator (Dots 4-6, 3)
+    'ITALIC_SYM': '⠨⠆',              # Italic Symbol Indicator
+    'ITALIC_WORD': '⠨⠂',            # Italic Word Indicator
+    'ITALIC_PASSAGE': '⠨⠶',         # Italic Passage Indicator
+    'ITALIC_TERMINATOR': '⠨⠄',      # Italic Terminator
 
     # Boldface Typeform (Prefix ⠘ - Dots 4-5)
-    'BOLD_SYM': '⠘⠆',               # Bold Symbol Indicator (Dots 4-5, 2-3)
-    'BOLD_WORD': '⠘⠂',              # Bold Word Indicator (Dots 4-5, 2)
-    'BOLD_PASSAGE': '⠘⠶',           # Bold Passage Indicator (Dots 4-5, 2-3-5-6)
-    'BOLD_TERMINATOR': '⠘⠄',        # Bold Terminator (Dots 4-5, 3)
+    'BOLD_SYM': '⠘⠆',                # Bold Symbol Indicator
+    'BOLD_WORD': '⠘⠂',              # Bold Word Indicator
+    'BOLD_PASSAGE': '⠘⠶',           # Bold Passage Indicator
+    'BOLD_TERMINATOR': '⠘⠄',        # Bold Terminator
 
     # Underline Typeform (Prefix ⠸ - Dots 4-5-6)
-    'UNDERLINE_SYM': '⠸⠆',          # Underline Symbol Indicator (Dots 4-5-6, 2-3)
-    'UNDERLINE_WORD': '⠸⠂',          # Underline Word Indicator (Dots 4-5-6, 2)
-    'UNDERLINE_PASSAGE': '⠸⠶',      # Underline Passage Indicator (Dots 4-5-6, 2-3-5-6)
-    'UNDERLINE_TERMINATOR': '⠸⠄',   # Underline Terminator (Dots 4-5-6, 3)
+    'UNDERLINE_SYM': '⠸⠆',           # Underline Symbol Indicator
+    'UNDERLINE_WORD': '⠸⠂',          # Underline Word Indicator
+    'UNDERLINE_PASSAGE': '⠸⠶',      # Underline Passage Indicator
+    'UNDERLINE_TERMINATOR': '⠸⠄',   # Underline Terminator
+    
+    # ADDED: Baseline, Subscript, Superscript (Crucial for math/technical material)
+    'BASELINE_IND': '⠨⠃',
+    'SUBSCRIPT_IND': '⠨⠢',
+    'SUPERSCRIPT_IND': '⠨⠔',
 }
 
 # --- Contractions (Used only in Grade 2) ---
 
-# 1. Strong Word Signs (must stand alone as a whole word)
-STRONG_WORD_SIGNS = {
+# 4. Strong Contractions (Used as both word signs and group signs)
+STRONG_CONTRACTIONS = {
     'and': '⠯', 'for': '⠫', 'of': '⠷', 'the': '⠮', 'with': '⠾',
+}
+
+# 5. Strong Word Signs (must stand alone as a whole word)
+STRONG_WORD_SIGNS = {
     'child': '⠡', 'shall': '⠩', 'this': '⠹', 'which': '⠱', 'out': '⠳',
     'still': '⠌',
 }
 
-# 2. Strong Group Signs (can be anywhere in a word)
+# 6. Strong Group Signs (can be anywhere in a word)
 STRONG_GROUP_SIGNS = {
     'ar': '⠜',
     'ch': '⠡',
@@ -129,81 +158,127 @@ STRONG_GROUP_SIGNS = {
     'st': '⠌',
     'th': '⠹',
     'wh': '⠱',
+    # NOTE: The Strong Contractions (and, for, of, the, with) also function as Strong Group Signs.
 }
 
-## 3. Lower Contractions (anywhere but the start of a word, or as whole words)
+# 7. Lower Contractions (anywhere but the start of a word, or as whole words)
 LOWER_CONTRACTIONS = {
-    # Lower Word Signs (can be used as part of a word)
-    'be': '⠐⠃', 'in': '⠔', 'was': '⠐⠧', 'were': '⠐⠺', 'his': '⠐⠓', 'it': '⠭',
-    # Lower Group Signs and Double Letters
-    'ea': '⠂',  # Lower Groupsign for 'ea' (dots 2, same as comma)
-    'en': '⠒',  # Lower Groupsign for 'en' (dots 2-5, same as colon)
+    # Lower Word Signs (must stand alone as a whole word or as a part of a compound word)
+    # The braille cells for these wordsigns are **unspaced** from preceding punctuation.
+    'be': '⠐⠃', 'in': '⠔', 'was': '⠐⠧', 'were': '⠐⠺', 'his': '⠐⠓',
+    'enough': '⠐⠹', 
+
+    # Lower Group Signs and Double Letters (must not begin a word)
+    'ea': '⠂',  # Lower Groupsign for 'ea'
+    'en': '⠒',  # Lower Groupsign for 'en'
+    'dis': '⠐⠙', # Lower Groupsign for 'dis' is Dot 5, d (e.g., 'distance')
     'bb': '⠃⠃', 'cc': '⠉⠉', 'ff': '⠋⠋', 'gg': '⠛⠛',
 }
 
-# 4. Lower Word Signs (must stand alone as a whole word)
-LOWER_WORD_SIGNS = {
-    # Alphabetic Wordsigns (single letters used as words)
+# 8. Alphabetic Wordsigns (single letters used as words - must stand alone)
+ALPHABETIC_WORDSIGNS = {
     'but': '⠃', 'can': '⠉', 'do': '⠙', 'every': '⠑', 'from': '⠋', 'go': '⠛',
     'have': '⠓', 'just': '⠚', 'knowledge': '⠅', 'like': '⠇', 'more': '⠍',
     'not': '⠝', 'people': '⠏', 'quite': '⠟', 'rather': '⠗', 'so': '⠎',
     'that': '⠞', 'us': '⠥', 'very': '⠧', 'will': '⠺', 'you': '⠽',
-    'as': '⠁⠎', 'are': '⠜',
     
-    # Other Lower Word Signs
-    'to': '⠞',       # Word sign for 'to' (dots 2-3-4-5)
-    'enough': '⠹',   # Word sign for 'enough' (dots 2-3-4-6)
-    'into': '⠔⠞',   # Word sign for 'into' (dots 3-5-6, 2-3-4-5)
-    'by': '⠃⠽',     # Word sign for 'by' (dots 2, 1-2-4-5-6)
-    'here': '⠓',     # Word sign for 'here' (dots 1-2-5, same as 'h')
+    # --- CORRECTED/SINGLE-CELL WORDSIGNS ---
+    'as': '⠁',    # 'as' is the letter 'a' (Dot 1) standing alone.
+    'it': '⠵',    # 'it' is the letter 'z' (Dots 1-3-5-6) standing alone.
+    'are': '⠜',   # 'are' is the 'ar' groupsign (Dots 3-4-5) standing alone.
+    
+    # Pre-Contracted Wordsigns (must stand alone)
+    'to': '⠰⠞',       # 'to' is Dot 5-6 (G1 sym), t
+    'into': '⠰⠔',     # 'into' is Dot 5-6 (G1 sym), i-n
+    'by': '⠰⠃',       # 'by' is Dot 5-6 (G1 sym), b
+    'here': '⠐⠓',     # 'here' is Dot 5, h
 }
 
-# 5. Shortform contractions (stand alone as a whole word)
-# NOTE: This is an intentionally incomplete subset of the full 75+ shortform list.
+# 9. Shortform contractions (stand alone as a whole word)
 SHORTFORM_CONTRACTIONS = {
-    # Full list is long, keeping subset for demonstration
     'about': '⠁⠃', 'after': '⠁⠋', 'again': '⠁⠛',
     'because': '⠃⠑⠉', 'before': '⠃⠑⠋', 'blind': '⠃⠇', 'braille': '⠃⠗⠇',
     'could': '⠉⠙', 'first': '⠋⠌', 'good': '⠛⠙', 'had': '⠓⠙', 'him': '⠓⠍',
     'little': '⠇⠇', 'much': '⠍⠡', 'must': '⠍⌡', 'one': '⠕⠝',
     'said': '⠎⠙', 'should': '⠩⠙', 'their': '⠹⠗', 'word': '⠺⠙',
     
-    # NEW ADDITIONS / Corrections
     'cannot': '⠐⠉', # Dot 5, c
-    'many': '⠍',     # Dot 5, m (if used as full word Shortform)
+    'many': '⠐⠍',     # Dot 5, m
     'spirit': '⠐⠎', # Dot 5, s
     'world': '⠐⠺',  # Dot 5, w
-    'altogether': '⠁⠇⠞', # Added for better representation of shortforms
+    'altogether': '⠁⠇⠞', 
+    
+    # ADDED: Shortforms from standard list (subset)
+    'according': '⠁⠉',
+    'across': '⠁⠉⠗',
+    'afternoon': '⠁⠋⠝',
+    'against': '⠁⠛⠎',
+    'although': '⠁⠇⠹',
+    'always': '⠁⠇⠎',
 }
 
-# 6. Final-letter contractions (terminal groupsigns)
+# 10. Final-letter contractions (terminal groupsigns)
 FINAL_LETTER_CONTRACTIONS = {
-    # Sorted for precedence logic (longer first, then two-cell, then single-cell)
-    'tion': '⠴⠝', 'ness': '⠴⠎', 'ment': '⠴⠞', 'ity': '⠴⠽',
-    'ence': '⠴⠑', 'ful': '⠴⠇', 'ong': '⠴⠛', 'sion': '⠨⠝',
-    'less': '⠨⠎', 'ance': '⠨⠑', 'ount': '⠨⠞', 'ound': '⠨⠙',
-    'ing': '⠔', 'ed': '⠙', 'er': '⠗', 'en': '⠝', 'ess': '⠎',
+    # Dot 4-6 Prefix
+    'sion': '⠨⠝',
+    'less': '⠨⠎',
+    'ance': '⠨⠑',
+    'ount': '⠨⠞',
+    'ound': '⠨⠙',
+    
+    # Dot 5-6 Prefix
+    'tion': '⠴⠝', 
+    'ness': '⠴⠎',
+    'ment': '⠴⠞',
+    'ity': '⠴⠽',
+    'ence': '⠴⠑',
+    'ful': '⠴⠇',
+    'ong': '⠴⠛',
+    
+    # Single Cell (Lower Cells)
+    'ing': '⠔',
+    'ed': '⠙',
+    'er': '⠗',
+    'en': '⠝',
+    'ess': '⠎',
 }
 FINAL_LETTER_CONTRACTIONS_SORTED = sorted(FINAL_LETTER_CONTRACTIONS.items(), key=lambda x: len(x[0]), reverse=True)
 
 
-# 7. Initial-letter contractions (must be at the beginning of a word)
+# 11. Initial-letter contractions (Dot 5 or Dot 4-5 based - must be at the beginning of a word)
 INITIAL_LETTER_CONTRACTIONS = {
-    'day': '⠙', 'ever': '⠑', 'father': '⠋', 'here': '⠓', 'know': '⠅',
-    'lord': '⠇', 'mother': '⠍', 'name': '⠝', 'one': '⠕', 'part': '⠏',
-    'question': '⠟', 'right': '⠗', 'some': '⠎', 'time': '⠞',
-    'under': '⠥', 'young': '⠽',
-    'com': '⠐⠉', 'dis': '⠙⠊⠎', 'con': '⠐⠝',
+    # Dot 5-based
+    'day': '⠐⠙', 'ever': '⠐⠑', 'father': '⠐⠋', 'know': '⠐⠅',
+    'lord': '⠐⠇', 'mother': '⠐⠍', 'name': '⠐⠝', 'one': '⠐⠕', 'part': '⠐⠏',
+    'question': '⠐⠟', 'right': '⠐⠗', 'some': '⠐⠎', 'time': '⠐⠞',
+    'under': '⠐⠥', 'young': '⠐⠽',
+    
+    # ADDED: Missing Dot 5-based contractions
+    'ought': '⠐⠷', 
+    'through': '⠐⠹', 
+    'where': '⠐⠱', 
+    'work': '⠐⠺',
+    
+    # Initial-letter wordsigns - Dot 5 based
+    'comm': '⠐⠉',
+    'conc': '⠐⠝',
+    'dis': '⠐⠙',
+    
+    # Dot 4-5-based
+    'these': '⠨⠹', # Dot 4-5, th
+    'those': '⠨⠱', # Dot 4-5, wh
+    'upon': '⠨⠥',  # Dot 4-5, u
+    'whose': '⠨⠺', # Dot 4-5, w
+    'word': '⠨⠹',  # Dot 4-5, d
 }
 
-# 8. Other Common Two-Cell Contractions
+# 12. Other Common Two-Cell Contractions
 OTHER_CONTRACTIONS = {
-    'fr': '⠋⠗',  
-    'gr': '⠛⠗',  
-    'tr': '⠞⠗',  
-    'bl': '⠃⠇',  
-    'br': '⠃⠗',  
-    'st': '⠌',    
+    'fr': '⠋⠗', 
+    'gr': '⠛⠗', 
+    'tr': '⠞⠗', 
+    'bl': '⠃⠇', 
+    'br': '⠃⠗',
 }
 
 
