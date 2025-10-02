@@ -1,6 +1,6 @@
 # didactic-chainsaw
 
-This repository contains two Python scripts and two Java classes for translation between standard English text and **Unified English Braille (UEB) Grade 1 (uncontracted)**.
+This repository contains two Python scripts, two Java classes and two C# classes for translation between standard English text and **Unified English Braille (UEB) Grade 1 (uncontracted)**. 
 
 ---
 
