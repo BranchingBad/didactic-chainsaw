@@ -1,0 +1,272 @@
+# Converted UEB Grade 2 Dictionary (Perky Duck Six-Key Chording)
+
+# 1. Single-cell letters and basic signs
+# Note: These are single chords.
+BRAILLE_LETTERS = {
+    'a': 'F', 'b': 'FD', 'c': 'FJ', 'd': 'FJK', 'e': 'FK', 'f': 'FDJ',
+    'g': 'FJDK', 'h': 'FDK', 'i': 'DJ', 'j': 'DJK', 'k': 'FS', 'l': 'FDS',
+    'm': 'FSJ', 'n': 'FSJK', 'o': 'FSK', 'p': 'FDSJ', 'q': 'FDSJK', 'r': 'FDSK',
+    's': 'DSJ', 't': 'DSJK', 'u': 'FSL', 'v': 'FDSL', 'w': 'DJKL', 'x': 'FSJL',
+    'y': 'FSJKL', 'z': 'FSKL',
+}
+
+# 2. Punctuation and indicators
+PUNCTUATION_SIGNS = {
+    # Basic Punctuation
+    ' ': ' ', 
+    '.': 'DKL', # Period/Dot/Decimal Point
+    ',': 'D', # Comma
+    '!': 'DSL', # Exclamation point
+    '?': 'DSKL', # Question mark
+    ':': 'DK', # Colon
+    ';': 'DS', # Semicolon
+    '-': 'SL', # Hyphen
+    '\'': 'S', # Apostrophe/Nondirectional Single Quote
+
+    # Quotes
+    '\"': 'DSKL',   # Generic Double Quote
+    
+    # Directional Quotes
+    '“': 'DSKL',   # Opening Outer Quote
+    '”': 'DKL',   # Closing Outer Quote
+    '‘': 'JL DSKL',   # Opening Inner Quote (Dot 4-6, Question)
+    '’': 'JL DKL',   # Closing Inner Quote (Dot 4-6, Period)
+    
+    # Grouping Punctuation
+    '(': 'K FDL',   # Opening Parenthesis (Dot 5, 1-2-6)
+    ')': 'K SJK',   # Closing Parenthesis (Dot 5, ar)
+    '[': 'JL FDL',   # Opening Square Bracket (Dot 4-6, 1-2-6)
+    ']': 'JL SJK',   # Closing Square Bracket (Dot 4-6, ar)
+    '{': 'JKL FDL',   # Opening Curly Bracket (Dot 4-5-6, 1-2-6)
+    '}': 'JKL SJK',   # Closing Curly Bracket (Dot 4-5-6, ar)
+    '<': 'J FDL',   # Opening Angle Bracket (Dot 4, 1-2-6)
+    '>': 'J SJK',   # Closing Angle Bracket (Dot 4, ar)
+    '〃': 'K D',  # Ditto Mark (Dot 5, Dot 2)
+
+    # Other Marks
+    '...': 'DKL DKL DKL', # Ellipsis (3 cells)
+    '—': 'SL SL',    # Em Dash (2 cells)
+    '/': 'JKL SJL',    # Solidus/Forward Slash (Dot 4-5-6, 3-4-6)
+    'cdcdcd': 'cdcdcd', # Placeholder for three-cell Ellipsis notation
+    
+    # Signs of Operation
+    '+': 'DSL',    # Plus Sign (Same cell as !)
+    '=': 'DSKL',    # Equals Sign (Same cell as ")
+    
+    # Currency and Special Symbols
+    '*': 'K SJL',   # Asterisk (Dot 5, 3-4-6)
+    '@': 'K F',   # Commercial At Sign (Dot 5, a)
+    '$': 'K DSJ',   # Dollar Sign (Dot 5, s)
+    '^': 'K FDJ',   # Caret / Circumflex Accent (Dot 5, f)
+    '|': 'FJKL',    # Vertical Bar / Pipe (th)
+    '_': 'FDS SL',   # Underscore (CAPS, Hyphen)
+    '%': 'JL DKL',   # Percent Sign (Dot 4-6, Close Quote)
+    '°': 'JK DJK',   # Degree Sign (Dot 4-5, j)
+    '#': 'JKL FJKL',   # Number Sign (Dot 4-5-6, th)
+    '&': 'J FDSJL',   # Ampersand (Dot 4, and)
+    '§': 'JK DSJ',   # Section Mark (Dot 4-5, s)
+    '©': 'JK FJ',   # Copyright Sign (Dot 4-5, c)
+    '®': 'JK FDSK',   # Registered Sign (Dot 4-5, r)
+    '¶': 'JK FDSJ',   # Paragraph Sign (Dot 4-5, p)
+    'ACCENT_SYM': 'J', # Accent/Foreign Text Indicator (Dot 4)
+    
+    # Transcriber's Notes & Locator
+    'OPEN_TRANSCRIBER_NOTE': 'JKL FDSJKL', 
+    'CLOSE_TRANSCRIBER_NOTE': 'JKL FJKL', 
+    'DOT_LOCATOR': 'K', 
+}
+
+# 3. Composition Signs (Indicators)
+BRAILLE_INDICATORS = {
+    # Basic Indicators
+    'NUM': 'SJKL',                    # Numeric Indicator
+    'LETTER_SIGN': 'JL',              # Letter Sign/Italic Prefix (Dot 4-6)
+  
+    # Capitalization Indicators (Dot 6 based)
+    'CAPS': 'L',                   # Capital Letter Indicator (Dot 6)
+    'CAPS_WORD': 'L L',              
+    'CAPS_PASSAGE': 'L L L',         
+    'CAPS_TERMINATOR': 'L S',        # (Dot 6, Dot 3)
+
+    # Grade 1 (Uncontracted) Indicators (Dots 5-6 based)
+    'G1_SYM': 'KL',                   
+    'G1_WORD': 'KL KL',                
+    'G1_PASSAGE': 'KL KL KL',           
+    'G1_TERMINATOR': 'KL S',          
+    
+    'LINE_CONT_IND': 'K SL', # Dot 5, hyphen
+
+    # Typeform/Emphasis Indicators (Prefix + Cell)
+    'ITALIC_SYM': 'JL DS',             
+    'ITALIC_WORD': 'JL D',            
+    'ITALIC_PASSAGE': 'JL DSKL',         
+    'ITALIC_TERMINATOR': 'JL S',      
+
+    'BOLD_SYM': 'JK DS',                
+    'BOLD_WORD': 'JK D',              
+    'BOLD_PASSAGE': 'JK DSKL',           
+    'BOLD_TERMINATOR': 'JK S',        
+
+    'UNDERLINE_SYM': 'JKL DS',           
+    'UNDERLINE_WORD': 'JKL D',          
+    'UNDERLINE_PASSAGE': 'JKL DSKL',      
+    'UNDERLINE_TERMINATOR': 'JKL S',   
+    
+    # Baseline, Subscript, Superscript 
+    'BASELINE_IND': 'JL FD',
+    'SUBSCRIPT_IND': 'JL DL',
+    'SUPERSCRIPT_IND': 'JL SJL',
+}
+
+# --- Contractions (Used only in Grade 2) ---
+
+# 4. Strong Contractions (Single chords)
+STRONG_CONTRACTIONS = {
+    'and': 'FDSJL', 'for': 'FJDKL', 'of': 'FDSKL', 'the': 'DSJL', 'with': 'FDLJ',
+}
+
+# 5. Strong Word Signs (Single chords)
+STRONG_WORD_SIGNS = {
+    'child': 'FL', 'shall': 'FJL', 'this': 'FJKL', 'which': 'FKL', 'out': 'FDKL',
+    'still': 'SJ',
+}
+
+# 6. Strong Group Signs (Single chords)
+STRONG_GROUP_SIGNS = {
+    'ar': 'SJK',
+    'ch': 'FL',
+    'ed': 'FJK',
+    'er': 'FDSK',
+    'gh': 'FSJL',
+    'ing': 'SJL',
+    'ou': 'FDKL',
+    'ow': 'DJL',
+    'sh': 'FJL',
+    'st': 'SJ',
+    'th': 'FJKL',
+    'wh': 'FKL',
+}
+
+# 7. Lower Contractions (Dot 5 or Dot 2-3-6 based chords)
+LOWER_CONTRACTIONS = {
+    # Lower Word Signs (Dot 5 + Chord)
+    'be': 'K FD', 'in': 'SJL', 'was': 'K FDSL', 'were': 'K DJKL', 'his': 'K FDK',
+    'enough': 'K FJKL', 
+
+    # Lower Group Signs and Double Letters
+    'ea': 'D',  
+    'en': 'DK',  
+    'dis': 'K FJK', 
+    'bb': 'FD FD', 'cc': 'FJ FJ', 'ff': 'FDJ FDJ', 'gg': 'FJDK FJDK',
+}
+
+# 8. Alphabetic Wordsigns (Single letter chords)
+ALPHABETIC_WORDSIGNS = {
+    'but': 'FD', 'can': 'FJ', 'do': 'FJK', 'every': 'FK', 'from': 'FDJ', 'go': 'FJDK',
+    'have': 'FDK', 'just': 'DJK', 'knowledge': 'FS', 'like': 'FDS', 'more': 'FSJ',
+    'not': 'FSJK', 'people': 'FDSJ', 'quite': 'FDSJK', 'rather': 'FDSK', 'so': 'DSJ',
+    'that': 'DSJK', 'us': 'FSL', 'very': 'FDSL', 'will': 'DJKL', 'you': 'FSJKL',
+    
+    # CORRECTED/SINGLE-CELL WORDSIGNS
+    'as': 'F',    # 'as' is the letter 'a' (Dot 1) standing alone.
+    'it': 'FSKL',    # 'it' is the letter 'z' (Dots 1-3-5-6) standing alone.
+    'are': 'SJK',   # 'are' is the 'ar' groupsign (Dots 3-4-5) standing alone.
+    
+    # Pre-Contracted Wordsigns (G1 Sym + Chord)
+    'to': 'KL DSJK',       
+    'into': 'KL SJL',     
+    'by': 'KL FD',       
+    'here': 'K FDK',     
+}
+
+# 9. Shortform contractions (Multi-cell sequences)
+SHORTFORM_CONTRACTIONS = {
+    'about': 'F FD', 'after': 'F FDJ', 'again': 'F FJDK',
+    'because': 'FD FK FJ', 'before': 'FD FK FDJ', 'blind': 'FD FDS', 'braille': 'FD FDSK FDS',
+    'could': 'FJ FJK', 'first': 'FDJ SJ', 'good': 'FJDK FJK', 'had': 'FDK FJK', 'him': 'FDK FSJ',
+    'little': 'FDS FDS', 'much': 'FSJ FL', 'must': 'FSJ FDSJK', 'one': 'FSK FSJK',
+    'said': 'DSJ FJK', 'should': 'FJL FJK', 'their': 'FJKL FDSK', 'word': 'DJKL FJK',
+    
+    # Dot 5 + Chord
+    'cannot': 'K FJ', 
+    'many': 'K FSJ',     
+    'spirit': 'K DSJ', 
+    'world': 'K DJKL',  
+    'altogether': 'F FDS DSJK', 
+    
+    # ADDED: Shortforms from standard list (subset)
+    'according': 'F FJ',
+    'across': 'F FJ FDSK',
+    'afternoon': 'F FDJ FSJK',
+    'against': 'F FJDK DSJ',
+    'although': 'F FDS FJKL',
+    'always': 'F FDS DSJ',
+}
+
+# 10. Final-letter contractions (Prefix + Chord)
+FINAL_LETTER_CONTRACTIONS = {
+    # Dot 4-6 Prefix
+    'sion': 'JL FSJK',
+    'less': 'JL DSJ',
+    'ance': 'JL FK',
+    'ount': 'JL DSJK',
+    'ound': 'JL FJK',
+    
+    # Dot 5-6 Prefix
+    'tion': 'KL FSJK', 
+    'ness': 'KL DSJ',
+    'ment': 'KL DSJK',
+    'ity': 'KL FSJKL',
+    'ence': 'KL FK',
+    'ful': 'KL FDS',
+    'ong': 'KL FJDK',
+    
+    # Single Cell (Lower Cells)
+    'ing': 'SJL',
+    'ed': 'FJK',
+    'er': 'FDSK',
+    'en': 'FSJK',
+    'ess': 'DSJ',
+}
+
+# 11. Initial-letter contractions (Dot 5 or Dot 4-5 based - Prefix + Chord)
+INITIAL_LETTER_CONTRACTIONS = {
+    # Dot 5-based
+    'day': 'K FJK', 'ever': 'K FK', 'father': 'K FDJ', 'know': 'K FS',
+    'lord': 'K FDS', 'mother': 'K FSJ', 'name': 'K FSJK', 'one': 'K FSK', 'part': 'K FDSJ',
+    'question': 'K FDSJK', 'right': 'K FDSK', 'some': 'K DSJ', 'time': 'K DSJK',
+    'under': 'K FSL', 'young': 'K FSJKL',
+    
+    # ADDED: Missing Dot 5-based contractions
+    'ought': 'K FDSKL', 
+    'through': 'K FJKL', 
+    'where': 'K FKL', 
+    'work': 'K DJKL',
+    
+    # Initial-letter wordsigns - Dot 5 based
+    'comm': 'K FJ',
+    'conc': 'K FSJK',
+    'dis': 'K FJK',
+    
+    # Dot 4-5-based (Dot 4-5 + Chord)
+    'these': 'JK FJKL', 
+    'those': 'JK FKL', 
+    'upon': 'JK FSL',  
+    'whose': 'JK DJKL', 
+    'word': 'JK FJKL',  
+}
+
+# 12. Other Common Two-Cell Contractions (Letter + Letter)
+OTHER_CONTRACTIONS = {
+    'fr': 'FDJ FDSK', 
+    'gr': 'FJDK FDSK', 
+    'tr': 'DSJK FDSK', 
+    'bl': 'FD FDS', 
+    'br': 'FD FDSK',
+}
+
+# Numeric mapping (Numeric Indicator + Letter Chord)
+NUMBER_MAP = {
+    '1': 'SJKL F', '2': 'SJKL FD', '3': 'SJKL FJ', '4': 'SJKL FJK', '5': 'SJKL FK',
+    '6': 'SJKL FDJ', '7': 'SJKL FJDK', '8': 'SJKL FDK', '9': 'SJKL DJ', '0': 'SJKL DJK',
+}
