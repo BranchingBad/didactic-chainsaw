@@ -51,7 +51,7 @@ text_to_translate = "Hello World! This is a test with 123."
 
 -----
 
-## ☕ Java Classes (Needs further testing)
+## ☕ Java Classes (Needs further testing. Vibe coded with Gemini.)
 These two Java classes replicate the functionality of the Python scripts, translating between standard English text and UEB Grade 1 braille using static methods.
 
 ### 3. `BrailleToTextTranslator.java`
@@ -83,7 +83,7 @@ public static void main(String[] args) {
     // Expected Output: ⠠⠓⠑⠇⠇⠕⠀⠠⠺⠕⠗⠇⠙⠖⠀⠠⠞⠓⠊⠎⠀⠊⠎⠀⠁⠀⠞⠑⠎⠞⠀⠺⠊⠞⠓⠀⠼⠁⠃⠉⠲
 }
 ```
-## 🖥️ C# Classes (Needs further testing)
+## 🖥️ C# Classes (Needs further testing. Vibe coded with Gemini.)
 These two C# classes replicate the Python and Java functionality, providing static methods for UEB Grade 1 translation within the .NET environment.
 
 ### 5. `BrailleToTextTranslator.cs`
@@ -119,7 +119,7 @@ public static void Main()
 }
 ```
 
-## 🌐 JavaScript Files (Needs further testing)
+## 🌐 JavaScript Files (Needs further testing. Vibe coded with Gemini)
 These two JavaScript files provide client-side translation functions, replicating the core UEB Grade 1 translation logic of the other implementations.
 
 ### 7. `BrailleToTextTranslator.js`
