@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-public static class UebGrade1Translator
+public static class TextToBraille // Renamed from UebGrade1Translator
 {
     private static readonly IReadOnlyDictionary<char, string> BrailleLetters;
     private static readonly IReadOnlyDictionary<char, string> PunctuationSigns;
@@ -11,7 +11,7 @@ public static class UebGrade1Translator
     private const string CapitalLetterIndicator = "⠠"; 
     private const string NumericIndicator = "⠼";     
 
-    static UebGrade1Translator()
+    static TextToBraille() // Constructor name updated
     {
         BrailleLetters = new Dictionary<char, string>
         {

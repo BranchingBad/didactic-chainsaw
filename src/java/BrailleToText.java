@@ -1,7 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 
-public class BrailleToTextTranslator {
+public class BrailleToText { // Renamed from BrailleToTextTranslator
 
     private static final Map<String, String> BRAILLE_MAP = new HashMap<>();
     private static final Map<String, String> DIGIT_MAP = new HashMap<>();
@@ -98,6 +98,6 @@ public class BrailleToTextTranslator {
     }
     
     public static void main(String[] args) {
-         System.out.println(translateUebGrade1ToText("⠼⠁⠃⠉⠲⠙⠑"));
+         System.out.println(BrailleToText.translateUebGrade1ToText("⠼⠁⠃⠉⠲⠙⠑")); // Updated class reference
     }
 }

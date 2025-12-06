@@ -4,7 +4,7 @@ import java.util.Map;
 /**
  * Translates standard English text to UEB Grade 1 (uncontracted) braille.
  */
-public class UebGrade1Translator {
+public class TextToBraille { // Renamed from UebGrade1Translator
 
     // --- UEB Grade 1 Mappings ---
     private static final Map<Character, String> BRAILLE_LETTERS = new HashMap<>();
@@ -107,7 +107,7 @@ public class UebGrade1Translator {
 
     public static void main(String[] args) {
         String textToTranslate = "Hello World! 123.45";
-        String brailleResult = translateToUebGrade1(textToTranslate);
+        String brailleResult = TextToBraille.translateToUebGrade1(textToTranslate); // Updated class reference
         System.out.println("Text: " + textToTranslate);
         System.out.println("Braille: " + brailleResult); 
     }

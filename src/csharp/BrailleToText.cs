@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
-public static class BrailleToTextTranslator
+public static class BrailleToText // Renamed from BrailleToTextTranslator
 {
     private static readonly IReadOnlyDictionary<string, string> BrailleMap;
     private static readonly IReadOnlyDictionary<string, string> DigitMap;
@@ -12,7 +12,7 @@ public static class BrailleToTextTranslator
     private const string NumberSign = "⠼";         
     private const string Hyphen = "⠤";             
 
-    static BrailleToTextTranslator()
+    static BrailleToText() // Constructor name updated
     {
         BrailleMap = new Dictionary<string, string>
         {
