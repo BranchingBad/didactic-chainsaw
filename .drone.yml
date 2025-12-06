@@ -1,0 +1,22 @@
+kind: pipeline
+type: docker
+name: didactic-chainsaw-tests
+
+steps:
+  - name: test-python
+    image: python:3.9-slim
+    commands:
+      - python -m unittest discover -s tests/python -p "test_*.py"
+
+  - name: test-javascript
+    image: node:16
+    commands:
+      - npm install jest
+      - npx jest
+
+  - name: test-java
+    image: maven:3.8-openjdk-17
+    commands:
+      - javac src/java/*.java tests/java/*.java
+      - java -jar junit-platform-console-standalone.jar -cp src/java:tests/java --scan-classpath
+      # Note: You'd typically use 'mvn test' here with a pom.xml
