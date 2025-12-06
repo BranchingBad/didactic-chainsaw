@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Didactic Chainsaw - UEB Grade 1 Braille Translator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Braille mappings
+        const BRAILLE_LETTERS = {
+            'a': '⠁', 'b': '⠃', 'c': '⠉', 'd': '⠙', 'e': '⠑', 'f': '⠋',
+            'g': '⠛', 'h': '⠓', 'i': '⠊', 'j': '⠚', 'k': '⠅', 'l': '⠇',
+            'm': '⠍', 'n': '⠝', 'o': '⠕', 'p': '⠏', 'q': '⠟', 'r': '⠗',
+            's': '⠎', 't': '⠞', 'u': '⠥', 'v': '⠧', 'w': '⠺', 'x': '⠭',
+            'y': '⠽', 'z': '⠵',
+        };
+
+        const PUNCTUATION_SIGNS = {
+            ' ': ' ', '.': '⠲', ',': '⠂', '!': '⠖', '?': '⠦',
+            ':': '⠒', ';': '⠆', '-': '⠤', "'": '⠄',
+            '(': '⠐⠣', ')': '⠐⠜', '"': '⠶'
+        };
+
+        const CAPITAL_LETTER_INDICATOR = '⠠';
+        const NUMERIC_INDICATOR = '⠼';
+
+        const NUMBER_CHARS = {
+            '1': '⠁', '2': '⠃', '3': '⠉', '4': '⠙', '5': '⠑',
+            '6': '⠋', '7': '⠛', '8': '⠓', '9': '⠊', '0': '⠚',
+        };
+
+        // Text to Braille translation
+        function translateToUebGrade1(text) {
+            const brailleOutput = [];
+            let inNumericMode = false;
+            text = text.replace(/"/g, '"').replace(/"/g, '"');
+
+            for (let i = 0; i < text.length; i++) {
+                const c = text[i];
+
+                if (/[0-9]/.test(c)) {
+                    if (!inNumericMode) {
+                        brailleOutput.push(NUMERIC_INDICATOR);
+                        inNumericMode = true;
+                    }
+                    brailleOutput.push(NUMBER_CHARS[c]);
+                    continue;
+                }
+
+                if (c === '.' && inNumericMode) {
+                    if (i + 1 < text.length && /[0-9]/.test(text[i + 1])) {
+                        brailleOutput.push(PUNCTUATION_SIGNS['.']);
+                        continue;
+                    }
+                }
+
+                if (inNumericMode) inNumericMode = false;
+
+                if (PUNCTUATION_SIGNS[c]) {
+                    brailleOutput.push(PUNCTUATION_SIGNS[c]);
+                    continue;
+                }
+
+                if (/[A-Z]/.test(c)) {
+                    brailleOutput.push(CAPITAL_LETTER_INDICATOR);
+                    brailleOutput.push(BRAILLE_LETTERS[c.toLowerCase()]);
+                    continue;
+                }
+
+                if (/[a-z]/.test(c)) {
+                    brailleOutput.push(BRAILLE_LETTERS[c]);
+                    continue;
+                }
+            }
+
+            return brailleOutput.join('');
+        }
+
+        // Braille to Text translation
+        function translateUebGrade1ToText(ueb) {
+            const BRAILLE_MAP = {...BRAILLE_LETTERS, ...{
+                ' ': ' ', '⠲': '.', '⠂': ',', '⠖': '!', '⠦': '?',
+                '⠒': ':', '⠆': ';', '⠤': '-', '⠄': "'", '⠶': '"',
+                '⠣': '(', '⠜': ')'
+            }};
+
+            const DIGIT_MAP = {
+                '⠁': '1', '⠃': '2', '⠉': '3', '⠙': '4', '⠑': '5',
+                '⠋': '6', '⠛': '7', '⠓': '8', '⠊': '9', '⠚': '0',
+            };
+
+            const result = [];
+            let i = 0;
+            let inNumericMode = false;
+
+            while (i < ueb.length) {
+                const c = ueb[i];
+
+                if (c === CAPITAL_LETTER_INDICATOR) {
+                    if (i + 1 < ueb.length) {
+                        const next = ueb[i + 1];
+                        if (BRAILLE_MAP[next] && /[a-z]/.test(BRAILLE_MAP[next])) {
+                            result.push(BRAILLE_MAP[next].toUpperCase());
+                            i += 2;
+                            continue;
+                        }
+                    }
+                    i += 1;
+                    continue;
+                }
+
+                if (c === '⠐') {
+                    if (i + 1 < ueb.length) {
+                        const next = ueb[i + 1];
+                        if (next === '⠣') {
+                            result.push('(');
+                            i += 2;
+                            continue;
+                        }
+                        if (next === '⠜') {
+                            result.push(')');
+                            i += 2;
+                            continue;
+                        }
+                    }
+                    i += 1;
+                    continue;
+                }
+
+                if (c === NUMERIC_INDICATOR) {
+                    inNumericMode = true;
+                    i += 1;
+                    continue;
+                }
+
+                if (BRAILLE_MAP[c]) {
+                    const txt = BRAILLE_MAP[c];
+
+                    if (inNumericMode) {
+                        if (DIGIT_MAP[c]) {
+                            result.push(DIGIT_MAP[c]);
+                        } else if (c === '⠤') {
+                            inNumericMode = false;
+                            result.push('-');
+                        } else if (c === '⠲') {
+                            const isDecimal = i + 1 < ueb.length && DIGIT_MAP[ueb[i + 1]];
+                            result.push('.');
+                            if (!isDecimal) inNumericMode = false;
+                        } else if (c === '⠂') {
+                            result.push(txt);
+                        } else {
+                            inNumericMode = false;
+                            result.push(txt);
+                        }
+                    } else {
+                        result.push(txt);
+                    }
+                }
+                i += 1;
+            }
+
+            return result.join('').trim();
+        }
+
+        // Lucide React Icons (simplified inline)
+        const ArrowLeftRight = () => (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M8 3L4 7l4 4"></path>
+                <path d="M4 7h16"></path>
+                <path d="m16 21 4-4-4-4"></path>
+                <path d="M20 17H4"></path>
+            </svg>
+        );
+
+        const Copy = () => (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+        );
+
+        const Check = () => (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        );
+
+        const Info = () => (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+        );
+
+        const Code = () => (
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+        );
+
+        function BrailleTranslator() {
+            const [mode, setMode] = useState('text-to-braille');
+            const [input, setInput] = useState('');
+            const [output, setOutput] = useState('');
+            const [copied, setCopied] = useState(false);
+            const [showInfo, setShowInfo] = useState(false);
+
+            const examples = {
+                'text-to-braille': [
+                    'Hello World!',
+                    'The year is 2025.',
+                    'Room 101',
+                    '123.45',
+                    '"Quoted text"'
+                ],
+                'braille-to-text': [
+                    '⠠⠓⠑⠇⠇⠕⠀⠠⠺⠕⠗⠇⠙⠖',
+                    '⠠⠞⠓⠑⠀⠽⠑⠁⠗⠀⠊⠎⠀⠼⠃⠚⠃⠑⠲',
+                    '⠠⠗⠕⠕⠍⠀⠼⠁⠚⠁',
+                    '⠼⠁⠃⠉⠲⠙⠑',
+                    '⠶⠠⠟⠥⠕⠞⠑⠙⠀⠞⠑⠭⠞⠶'
+                ]
+            };
+
+            useEffect(() => {
+                if (!input) {
+                    setOutput('');
+                    return;
+                }
+
+                try {
+                    const result = mode === 'text-to-braille' 
+                        ? translateToUebGrade1(input)
+                        : translateUebGrade1ToText(input);
+                    setOutput(result);
+                } catch (e) {
+                    setOutput('Translation error');
+                }
+            }, [input, mode]);
+
+            const handleCopy = async () => {
+                await navigator.clipboard.writeText(output);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+            };
+
+            const swapMode = () => {
+                const newMode = mode === 'text-to-braille' ? 'braille-to-text' : 'text-to-braille';
+                setMode(newMode);
+                setInput(output);
+                setOutput('');
+            };
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white p-4">
+                    <div className="max-w-6xl mx-auto">
+                        <div className="text-center mb-8 pt-8">
+                            <div className="flex items-center justify-center gap-3 mb-4">
+                                <Code />
+                                <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                                    Didactic Chainsaw
+                                </h1>
+                            </div>
+                            <p className="text-purple-300 text-lg">UEB Grade 1 Braille Translator</p>
+                            <button
+                                onClick={() => setShowInfo(!showInfo)}
+                                className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 rounded-lg transition-colors"
+                            >
+                                <Info />
+                                {showInfo ? 'Hide' : 'Show'} Info
+                            </button>
+                        </div>
+
+                        {showInfo && (
+                            <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 mb-8 border border-purple-500/20">
+                                <h3 className="text-xl font-semibold mb-3 text-purple-300">About UEB Grade 1</h3>
+                                <div className="space-y-2 text-sm text-slate-300">
+                                    <p>This translator converts between standard English text and Unified English Braille (UEB) Grade 1 (uncontracted).</p>
+                                    <ul className="list-disc list-inside space-y-1 ml-4">
+                                        <li>Supports lowercase and uppercase letters with capital indicators (⠠)</li>
+                                        <li>Numbers use numeric indicator (⠼) followed by letter patterns</li>
+                                        <li>Handles decimal points, punctuation, and parentheses</li>
+                                        <li>Full Unicode braille patterns (U+2800 to U+28FF)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl shadow-2xl border border-purple-500/20 overflow-hidden">
+                            <div className="bg-slate-900/50 p-4 flex items-center justify-between border-b border-purple-500/20">
+                                <div className="text-sm font-medium text-purple-300">
+                                    {mode === 'text-to-braille' ? 'Text → Braille' : 'Braille → Text'}
+                                </div>
+                                <button
+                                    onClick={swapMode}
+                                    className="p-2 hover:bg-purple-500/20 rounded-lg transition-colors"
+                                    title="Swap direction"
+                                >
+                                    <ArrowLeftRight />
+                                </button>
+                            </div>
+
+                            <div className="grid md:grid-cols-2 divide-x divide-purple-500/20">
+                                <div className="p-6">
+                                    <label className="block text-sm font-medium text-purple-300 mb-2">
+                                        {mode === 'text-to-braille' ? 'English Text' : 'Braille Input'}
+                                    </label>
+                                    <textarea
+                                        value={input}
+                                        onChange={(e) => setInput(e.target.value)}
+                                        placeholder={mode === 'text-to-braille' ? 'Enter text to translate...' : 'Enter braille to translate...'}
+                                        className="w-full h-48 bg-slate-900/50 text-white rounded-lg p-4 border border-purple-500/30 focus:border-purple-500 focus:outline-none resize-none"
+                                        style={mode === 'braille-to-text' ? { fontSize: '24px', lineHeight: '1.5' } : {}}
+                                    />
+                                    
+                                    <div className="mt-4">
+                                        <p className="text-xs text-slate-400 mb-2">Try an example:</p>
+                                        <div className="flex flex-wrap gap-2">
+                                            {examples[mode].slice(0, 3).map((ex, i) => (
+                                                <button
+                                                    key={i}
+                                                    onClick={() => setInput(ex)}
+                                                    className="px-3 py-1 bg-purple-500/20 hover:bg-purple-500/30 rounded-lg text-xs transition-colors"
+                                                >
+                                                    {mode === 'text-to-braille' ? ex : `Example ${i + 1}`}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="p-6 bg-slate-900/30">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <label className="block text-sm font-medium text-purple-300">
+                                            {mode === 'text-to-braille' ? 'Braille Output' : 'English Text'}
+                                        </label>
+                                        <button
+                                            onClick={handleCopy}
+                                            disabled={!output}
+                                            className="p-2 hover:bg-purple-500/20 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                                            title="Copy to clipboard"
+                                        >
+                                            {copied ? <Check /> : <Copy />}
+                                        </button>
+                                    </div>
+                                    <div 
+                                        className="w-full h-48 bg-slate-950/50 text-white rounded-lg p-4 border border-purple-500/20 overflow-auto"
+                                        style={mode === 'text-to-braille' ? { fontSize: '24px', lineHeight: '1.5' } : {}}
+                                    >
+                                        {output || <span className="text-slate-500 italic">Translation will appear here...</span>}
+                                    </div>
+
+                                    {output && (
+                                        <div className="mt-4 p-3 bg-purple-500/10 rounded-lg border border-purple-500/20">
+                                            <p className="text-xs text-slate-400">
+                                                Length: {output.length} characters
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mt-8 bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-purple-500/20">
+                            <h3 className="text-lg font-semibold mb-4 text-purple-300">Quick Reference</h3>
+                            <div className="grid md:grid-cols-3 gap-6 text-sm">
+                                <div>
+                                    <h4 className="font-medium text-purple-400 mb-2">Indicators</h4>
+                                    <ul className="space-y-1 text-slate-300">
+                                        <li>Capital: ⠠ (Dot 6)</li>
+                                        <li>Number: ⠼ (Dots 3-4-5-6)</li>
+                                        <li>Parentheses: ⠐ (Dot 5) prefix</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 className="font-medium text-purple-400 mb-2">Punctuation</h4>
+                                    <ul className="space-y-1 text-slate-300">
+                                        <li>Period: ⠲</li>
+                                        <li>Comma: ⠂</li>
+                                        <li>Question: ⠦</li>
+                                        <li>Exclamation: ⠖</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 className="font-medium text-purple-400 mb-2">Numbers</h4>
+                                    <ul className="space-y-1 text-slate-300">
+                                        <li>Use letters a-j for 1-0</li>
+                                        <li>Decimal: ⠲ (if followed by digit)</li>
+                                        <li>Hyphen ends numeric mode</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="text-center mt-8 pb-8 text-slate-400 text-sm">
+                            <p>Open source project implementing UEB Grade 1 translation</p>
+                            <p className="mt-1">Available in Python, Java, C#, and JavaScript</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<BrailleTranslator />, document.getElementById('root'));
+    </script>
+</body>
+</html>

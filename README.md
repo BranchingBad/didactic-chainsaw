@@ -1,6 +1,6 @@
 # didactic-chainsaw
 
-A multilingual implementation of bidirectional translation between standard English text and **Unified English Braille (UEB) Grade 1 (uncontracted)**. This repository provides implementations in Python, Java, C#, and JavaScript, complete with comprehensive test suites.
+A multilingual implementation of bidirectional translation between standard English text and **Unified English Braille (UEB) Grade 1 (uncontracted)**. This repository provides implementations in Python, Java, C#, and JavaScript, complete with comprehensive test suites and an interactive web application.
 
 ---
 
@@ -8,6 +8,7 @@ A multilingual implementation of bidirectional translation between standard Engl
 
 - [Overview](#overview)
 - [Features](#features)
+- [Web Application](#web-application)
 - [Project Structure](#project-structure)
 - [Implementations](#implementations)
   - [Python](#python)
@@ -48,6 +49,41 @@ All implementations handle:
 - **Round-trip Translation**: Ensures accuracy with bidirectional conversion tests
 - **Smart Quote Handling**: Automatically normalizes smart quotes
 - **Numeric Mode Logic**: Proper handling of decimals and number sequences
+- **Interactive Web App**: User-friendly browser-based translator
+
+---
+
+## 🌐 Web Application
+
+An interactive web-based translator is now available! Simply open `index.html` in any modern web browser to use the translator.
+
+### Features:
+- **Bidirectional Translation**: Switch between Text→Braille and Braille→Text modes
+- **Real-time Conversion**: See results as you type
+- **Copy to Clipboard**: One-click copying of translated text
+- **Example Templates**: Quick-start examples for testing
+- **Educational Reference**: Built-in UEB Grade 1 guide and quick reference
+- **Responsive Design**: Works on desktop, tablet, and mobile devices
+- **No Installation Required**: Fully self-contained HTML file
+
+### Quick Start:
+```bash
+# Option 1: Open directly in browser
+open index.html
+
+# Option 2: Serve with Python
+python -m http.server 8000
+# Then navigate to http://localhost:8000
+
+# Option 3: Serve with Node.js
+npx http-server
+```
+
+### Demo:
+Try translating:
+- `Hello World!` → `⠠⠓⠑⠇⠇⠕⠀⠠⠺⠕⠗⠇⠙⠖`
+- `Room 101` → `⠠⠗⠕⠕⠍⠀⠼⠁⠚⠁`
+- `123.45` → `⠼⠁⠃⠉⠲⠙⠑`
 
 ---
 
@@ -59,6 +95,7 @@ didactic-chainsaw/
 ├── .gitignore                      # Git ignore rules
 ├── LICENSE                         # Apache 2.0 license
 ├── README.md                       # This file
+├── index.html                      # Interactive web translator (NEW!)
 ├── data/
 │   ├── dictionaries/               # UEB Grade 2 reference dictionaries
 │   │   ├── ueb-grade-2-ascii.txt
@@ -215,6 +252,15 @@ console.log(`Text: ${text}`);
 
 ## 🔧 Installation & Usage
 
+### Web Application
+```bash
+# No installation required - just open in browser
+open index.html
+
+# Or serve locally
+python -m http.server 8000
+```
+
 ### Python
 ```bash
 # No installation required - pure Python 3
@@ -352,6 +398,7 @@ Contributions are welcome! Please feel free to submit pull requests or open issu
 - Enhanced test coverage
 - Documentation improvements
 - UEB Grade 2 (contracted) support
+- Web application enhancements
 
 ---
 
@@ -371,9 +418,19 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 ## ⚠️ Important Notes
 
+- **Web Application**: Self-contained HTML file with no external dependencies - works offline!
 - **Java and C# implementations**: While functional, these have been generated with AI assistance and require further testing in production environments
 - **Grade 2 Support**: This repository includes Grade 2 dictionary references in the `data/dictionaries/` folder for future implementation
 - **Limited Punctuation**: Current implementations support basic punctuation; additional symbols may require updates to the mapping dictionaries
+
+---
+
+## 🎯 Quick Links
+
+- **Try it now**: Open `index.html` in your browser
+- **Report bugs**: [GitHub Issues](https://github.com/yourusername/didactic-chainsaw/issues)
+- **View source**: Browse the `src/` directory for language-specific implementations
+- **Run tests**: See the [Testing](#testing) section above
 
 ---
 
