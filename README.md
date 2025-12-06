@@ -1,145 +1,380 @@
 # didactic-chainsaw
 
-This repository contains two Python scripts, two Java classes, two C# classes and two Javascript files for translation between standard English text and **Unified English Braille (UEB) Grade 1 (uncontracted)**. 
+A multilingual implementation of bidirectional translation between standard English text and **Unified English Braille (UEB) Grade 1 (uncontracted)**. This repository provides implementations in Python, Java, C#, and JavaScript, complete with comprehensive test suites.
 
 ---
 
-## 🚀 Scripts
+## 📋 Table of Contents
 
-### 1. `braille-text.py`
+- [Overview](#overview)
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Implementations](#implementations)
+  - [Python](#python)
+  - [Java](#java)
+  - [C#](#c)
+  - [JavaScript](#javascript)
+- [Installation & Usage](#installation--usage)
+- [Testing](#testing)
+- [UEB Grade 1 Reference](#ueb-grade-1-reference)
+- [Contributing](#contributing)
+- [License](#license)
 
-This script provides the function `translate_ueb_grade1_to_text(ueb_input)` which translates **UEB Grade 1 braille (Unicode patterns)** back into standard English text. It handles capitalization indicators, the numeric indicator, and basic punctuation.
+---
 
-#### Example Usage (from script):
+## 🔍 Overview
 
-The script currently processes the following UEB input, which is a news-style passage:
+This project implements UEB Grade 1 braille translation in four programming languages. Each implementation provides two core functions:
 
+1. **Text to Braille**: Converts standard English text into UEB Grade 1 braille (Unicode patterns)
+2. **Braille to Text**: Converts UEB Grade 1 braille back into readable English text
+
+All implementations handle:
+- Lowercase and uppercase letters
+- Capital letter indicators
+- Numeric mode with proper indicators
+- Decimal points in numbers
+- Standard punctuation marks
+- Parentheses with proper prefixes
+
+---
+
+## ✨ Features
+
+- **Multi-language Support**: Identical functionality across Python, Java, C#, and JavaScript
+- **Full Unicode Support**: Uses standard Unicode braille patterns (U+2800 to U+28FF)
+- **Comprehensive Testing**: Unit tests for all implementations
+- **CI/CD Ready**: Includes Drone CI configuration
+- **Round-trip Translation**: Ensures accuracy with bidirectional conversion tests
+- **Smart Quote Handling**: Automatically normalizes smart quotes
+- **Numeric Mode Logic**: Proper handling of decimals and number sequences
+
+---
+
+## 📁 Project Structure
+
+```
+didactic-chainsaw/
+├── .drone.yml                      # CI/CD pipeline configuration
+├── .gitignore                      # Git ignore rules
+├── LICENSE                         # Apache 2.0 license
+├── README.md                       # This file
+├── data/
+│   ├── dictionaries/               # UEB Grade 2 reference dictionaries
+│   │   ├── ueb-grade-2-ascii.txt
+│   │   ├── ueb-grade-2-perky.txt
+│   │   └── ueb-grade-2-unicode.txt
+│   └── samples/                    # Sample text and braille files
+│       ├── ontario-human-rights.txt
+│       └── sample-perky.txt
+├── src/
+│   ├── python/                     # Python implementation
+│   │   ├── text_to_braille.py
+│   │   └── braille_to_text.py
+│   ├── java/                       # Java implementation
+│   │   ├── TextToBraille.java
+│   │   └── BrailleToText.java
+│   ├── csharp/                     # C# implementation
+│   │   ├── TextToBraille.cs
+│   │   └── BrailleToText.cs
+│   └── javascript/                 # JavaScript implementation
+│       ├── text-to-braille.js
+│       └── braille-to-text.js
+└── tests/
+    ├── python/
+    │   └── test_braille.py
+    ├── java/
+    │   └── BrailleTest.java
+    ├── csharp/
+    │   └── BrailleTests.cs
+    └── javascript/
+        └── braille.test.js
+```
+
+---
+
+## 🚀 Implementations
+
+### Python
+
+#### **text_to_braille.py**
+Translates standard English text into UEB Grade 1 braille.
+
+**Usage:**
 ```python
-UEB_INPUT = "⠠⠕⠝⠀⠠⠎⠑⠏⠞⠲⠀⠼⠃⠃⠂⠀⠼⠁⠊⠛⠑⠂⠀⠼⠙⠑⠤⠽⠑⠁⠗⠤⠕⠇⠙⠀⠠⠎⠁⠗⠁⠀⠠⠚⠁⠝⠑⠀⠠⠍⠕⠕⠗⠑⠀⠙⠗⠕⠏⠏⠑⠙⠀⠓⠑⠗⠀⠎⠕⠝⠀⠕⠋⠋⠀⠁⠞⠀⠓⠊⠎⠀⠠⠎⠁⠝⠀⠠⠋⠗⠁⠝⠉⠊⠎⠉⠕⠀⠎⠉⠓⠕⠕⠇⠂⠀⠧⠊⠎⠊⠞⠑⠙⠀⠁⠀⠏⠗⠊⠧⠁⠞⠑⠀⠛⠥⠝⠀⠙⠑⠁⠇⠑⠗⠀⠁⠝⠙⠂⠀⠊⠝⠀⠺⠓⠁⠞⠀⠎⠓⠑⠀⠇⠁⠞⠑⠗⠀⠞⠕⠇⠙⠀⠞⠓⠑⠀⠠⠇⠕⠎⠀⠠⠁⠝⠛⠑⠇⠑⠎⠀⠠⠞⠊⠍⠑⠎⠀⠺⠁⠎⠀⠁⠀⠶⠁⠀⠅⠊⠝⠙⠀⠕⠋⠀⠥⠇⠞⠊⠍⠁⠞⠑⠀⠏⠗⠕⠞⠑⠎⠞⠀⠁⠛⠁⠊⠝⠎⠞⠀⠞⠓⠑⠀⠎⠽⠎⠞⠑⠍⠂⠴⠀⠙⠗⠑⠺⠀⠁⠀⠨⠼⠉⠓⠤⠉⠁⠇⠊⠃⠗⠑⠀⠏⠊⠎⠞⠕⠇⠀⠕⠥⠞⠎⠊⠙⠑⠀⠁⠀⠓⠕⠞⠑⠇⠀⠇⠁⠞⠑⠗⠀⠊⠝⠀⠞⠓⠑⠀⠙⠁⠽⠂⠀⠋⠊⠗⠊⠝⠛⠀⠁⠞⠀⠞⠓⠑⠝⠤⠏⠗⠑⠎⠊⠙⠑⠝⠞⠀⠠⠛⠑⠗⠁⠇⠙⠀⠠⠋⠕⠗⠙⠲"
-````
+from text_to_braille import translate_to_ueb_grade1
 
-**Output:**
-
+text = "Hello World! This is a test with 123.45 and \"quotes\"."
+braille = translate_to_ueb_grade1(text)
+print(braille)
+# Output: ⠠⠓⠑⠇⠇⠕⠀⠠⠺⠕⠗⠇⠙⠖⠀⠠⠞⠓⠊⠎⠀⠊⠎⠀⠁⠀⠞⠑⠎⠞⠀⠺⠊⠞⠓⠀⠼⠁⠃⠉⠲⠙⠑⠀⠁⠝⠙⠀⠶⠟⠥⠕⠞⠑⠎⠶⠲
 ```
-On Sept. 22, 1989, 45-year-old Sara Jane Moore dropped her son off at his San Francisco school, visited a private gun dealer and, in what she later told the Los Angeles Times was a "a kind of ultimate protest against the system," drew a .38-caliber pistol outside a hotel later in the day, firing at then-president Gerald Ford.
-```
 
------
+#### **braille_to_text.py**
+Translates UEB Grade 1 braille back into standard English text.
 
-### 2. `text-braille-ueb-grade-1.py`
-
-This script provides the function `translate_to_ueb_grade1(text)` which translates **standard English text** into its corresponding **UEB Grade 1 (uncontracted) braille representation**. It implements rules for:
-
-  * Lowercase letters
-  * The **Capital Letter Indicator** (`⠠`) for capitalized letters.
-  * The **Numeric Indicator** (`⠼`) for digit sequences.
-  * Basic punctuation (e.g., space, period, comma, question mark).
-
-#### Example Usage (from script):
-
+**Usage:**
 ```python
-text_to_translate = "Hello World! This is a test with 123."
+from braille_to_text import translate_ueb_grade1_to_text
+
+braille = "⠠⠓⠑⠇⠇⠕⠀⠠⠺⠕⠗⠇⠙⠖⠀⠼⠁⠃⠉⠲⠙⠑"
+text = translate_ueb_grade1_to_text(braille)
+print(text)
+# Output: Hello World! 123.45
 ```
 
-**Output:**
+---
 
-```
-⠠⠓⠑⠇⠇⠕⠀⠠⠺⠕⠗⠇⠙⠖⠀⠠⠞⠓⠊⠎⠀⠊⠎⠀⠁⠀⠞⠑⠎⠞⠀⠺⠊⠞⠓⠀⠼⠁⠃⠉⠲
-```
+### Java
 
-(Which translates back to "Hello World\! This is a test with 123.")
+#### **TextToBraille.java**
+Provides static method `translateToUebGrade1(String text)` for text-to-braille translation.
 
------
-
-## ☕ Java Classes (Needs further testing. Vibe coded with Gemini.)
-These two Java classes replicate the functionality of the Python scripts, translating between standard English text and UEB Grade 1 braille using static methods.
-
-### 3. `BrailleToTextTranslator.java`
-This class provides the static method translateUebGrade1ToText(String uebInput) for translating UEB Grade 1 braille back into standard English text.
-
-#### Example Usage:
-To run the translation, compile and execute the class, which contains a main method with example usage:
-
-```Java
+**Usage:**
+```java
 public static void main(String[] args) {
-    String uebInput = "⠠⠕⠝⠀⠠⠎⠑⠏⠞⠲⠀⠼⠃⠃⠂⠀⠼⠁⠊⠛⠑⠲";
-    String translatedText = BrailleToTextTranslator.translateUebGrade1ToText(uebInput);
-    System.out.println("Text Output: " + translatedText);
-    // Expected Output: On Sept. 22, 1975.
+    String text = "Hello World! This is a test with 123.";
+    String braille = TextToBraille.translateToUebGrade1(text);
+    System.out.println("Braille: " + braille);
+    // Output: ⠠⠓⠑⠇⠇⠕⠀⠠⠺⠕⠗⠇⠙⠖⠀⠠⠞⠓⠊⠎⠀⠊⠎⠀⠁⠀⠞⠑⠎⠞⠀⠺⠊⠞⠓⠀⠼⠁⠃⠉⠲
 }
 ```
 
-### 4. `UebGrade1Translator.java`
-This class provides the static method translateToUebGrade1(String text) for translating standard English text into its UEB Grade 1 braille representation.
+#### **BrailleToText.java**
+Provides static method `translateUebGrade1ToText(String uebInput)` for braille-to-text translation.
 
-#### Example Usage:
-To run the translation, compile and execute the class, which contains a main method with example usage:
-
-```Java
+**Usage:**
+```java
 public static void main(String[] args) {
-    String textToTranslate = "Hello World! This is a test with 123.";
-    String brailleResult = UebGrade1Translator.translateToUebGrade1(textToTranslate);
-    System.out.println("Braille Output: " + brailleResult);
-    // Expected Output: ⠠⠓⠑⠇⠇⠕⠀⠠⠺⠕⠗⠇⠙⠖⠀⠠⠞⠓⠊⠎⠀⠊⠎⠀⠁⠀⠞⠑⠎⠞⠀⠺⠊⠞⠓⠀⠼⠁⠃⠉⠲
+    String braille = "⠠⠕⠝⠀⠠⠎⠑⠏⠞⠲⠀⠼⠃⠃⠂⠀⠼⠁⠊⠛⠑⠲";
+    String text = BrailleToText.translateUebGrade1ToText(braille);
+    System.out.println("Text: " + text);
+    // Output: On Sept. 22, 1975.
 }
 ```
-## 🖥️ C# Classes (Needs further testing. Vibe coded with Gemini.)
-These two C# classes replicate the Python and Java functionality, providing static methods for UEB Grade 1 translation within the .NET environment.
 
-### 5. `BrailleToTextTranslator.cs`
-This static class provides the method TranslateUebGrade1ToText(string uebInput) for translating UEB Grade 1 braille back into standard English text.
+---
 
-#### Example Usage:
-To run the translation, you can use the built-in Main method after compiling the class:
+### C#
 
-```C#
+#### **TextToBraille.cs**
+Static class with method `TranslateToUebGrade1(string text)` for text-to-braille translation.
+
+**Usage:**
+```csharp
 public static void Main()
 {
-    // Example from the original Python script.
-    string uebInput = "⠠⠕⠝⠀⠠⠎⠑⠏⠞⠲⠀⠼⠃⠃⠂⠀⠼⠁⠊⠛⠑⠲";
-    string translatedText = BrailleToTextTranslator.TranslateUebGrade1ToText(uebInput);
-    Console.WriteLine($"Text Output: {translatedText}");
-    // Expected Output: On Sept. 22, 1975.
+    string text = "Hello World! This is a test with 123.";
+    string braille = TextToBraille.TranslateToUebGrade1(text);
+    Console.WriteLine($"Braille: {braille}");
+    // Output: ⠠⠓⠑⠇⠇⠕⠀⠠⠺⠕⠗⠇⠙⠖⠀⠠⠞⠓⠊⠎⠀⠊⠎⠀⠁⠀⠞⠑⠎⠞⠀⠺⠊⠞⠓⠀⠼⠁⠃⠉⠲
 }
 ```
 
-### 6. `UebGrade1Translator.cs`
-This static class provides the method TranslateToUebGrade1(string text) for translating standard English text into its UEB Grade 1 braille representation.
+#### **BrailleToText.cs**
+Static class with method `TranslateUebGrade1ToText(string uebInput)` for braille-to-text translation.
 
-#### Example Usage:
-To run the translation, you can use the built-in Main method after compiling the class:
-
-```C#
+**Usage:**
+```csharp
 public static void Main()
 {
-    string textToTranslate = "Hello World! This is a test with 123.";
-    string brailleResult = UebGrade1Translator.TranslateToUebGrade1(textToTranslate);
-    Console.WriteLine($"Braille Output: {brailleResult}");
-    // Expected Output: ⠠⠓⠑⠇⠇⠕ w⠠⠺⠕⠗⠇⠙⠖ ⠠⠞⠓⠊⠎ ⠊⠎ ⠁ ⠞⠑⠎⠞ ⠺⠊⠞⠓ ⠼⠁⠃⠉⠲
+    string braille = "⠠⠕⠝⠀⠠⠎⠑⠏⠞⠲⠀⠼⠃⠃⠂⠀⠼⠁⠊⠛⠑⠲";
+    string text = BrailleToText.TranslateUebGrade1ToText(braille);
+    Console.WriteLine($"Text: {text}");
+    // Output: On Sept. 22, 1975.
 }
 ```
 
-## 🌐 JavaScript Files (Needs further testing. Vibe coded with Gemini)
-These two JavaScript files provide client-side translation functions, replicating the core UEB Grade 1 translation logic of the other implementations.
+---
 
-### 7. `BrailleToTextTranslator.js`
-This script provides the function translateUebGrade1ToText(uebInput) which translates UEB Grade 1 braille (Unicode patterns) back into standard English text, handling capitalization and the numeric indicator.
+### JavaScript
 
-#### Example Usage (from script):
-```JavaScript
-const UEB_INPUT = "⠠⠕⠝⠀⠠⠎⠑⠏⠞⠲⠀⠼⠃⠃⠂⠀⠼⠁⠊⠛⠑⠲";
-let translatedText = translateUebGrade1ToText(UEB_INPUT);
-console.log(`Text Output: ${translatedText}`);
-// Expected Output: On Sept. 22, 1975.
-```
+#### **text-to-braille.js**
+Function `translateToUebGrade1(text)` for text-to-braille translation.
 
-### 8. `UebGrade1Translator.js`
-This script provides the function translateToUebGrade1(text) which translates standard English text into its corresponding UEB Grade 1 (uncontracted) braille representation, including indicators for capitals and digits.
-
-#### Example Usage (from script):
-``` JavaScript
+**Usage:**
+```javascript
 const textToTranslate = "Hello World! This is a test with 123.";
-const brailleResult = translateToUebGrade1(textToTranslate);
-console.log(`Braille Output: ${brailleResult}`);
-// Expected Output: ⠠⠓⠑⠇⠇⠕⠀⠠⠺⠕⠗⠇⠙⠖⠀⠠⠞⠓⠊⠎⠀⠊⠎⠀⠁⠀⠞⠑⠎⠞⠀⠺⠊⠞⠓⠀⠼⠁⠃⠉⠲
+const braille = translateToUebGrade1(textToTranslate);
+console.log(`Braille: ${braille}`);
+// Output: ⠠⠓⠑⠇⠇⠕⠀⠠⠺⠕⠗⠇⠙⠖⠀⠠⠞⠓⠊⠎⠀⠊⠎⠀⠁⠀⠞⠑⠎⠞⠀⠺⠊⠞⠓⠀⠼⠁⠃⠉⠲
 ```
+
+#### **braille-to-text.js**
+Function `translateUebGrade1ToText(uebInput)` for braille-to-text translation.
+
+**Usage:**
+```javascript
+const braille = "⠠⠕⠝⠀⠠⠎⠑⠏⠞⠲⠀⠼⠃⠃⠂⠀⠼⠁⠊⠛⠑⠲";
+const text = translateUebGrade1ToText(braille);
+console.log(`Text: ${text}`);
+// Output: On Sept. 22, 1975.
+```
+
+---
+
+## 🔧 Installation & Usage
+
+### Python
+```bash
+# No installation required - pure Python 3
+python src/python/text_to_braille.py
+python src/python/braille_to_text.py
+```
+
+### Java
+```bash
+# Compile
+javac src/java/TextToBraille.java src/java/BrailleToText.java
+
+# Run
+java -cp src/java TextToBraille
+java -cp src/java BrailleToText
+```
+
+### C#
+```bash
+# Compile
+csc src/csharp/TextToBraille.cs
+csc src/csharp/BrailleToText.cs
+
+# Run
+./TextToBraille.exe
+./BrailleToText.exe
+```
+
+### JavaScript
+```bash
+# Node.js
+node src/javascript/text-to-braille.js
+node src/javascript/braille-to-text.js
+```
+
+---
+
+## 🧪 Testing
+
+All implementations include comprehensive unit tests that verify:
+- Basic alphabet translation
+- Capitalization handling
+- Numeric mode and decimal points
+- Punctuation marks
+- Parentheses with proper prefixes
+- Round-trip translation integrity
+- Smart quote normalization
+
+### Running Tests
+
+#### Python
+```bash
+python -m unittest discover -s tests/python -p "test_*.py"
+```
+
+#### Java
+```bash
+# Requires JUnit 5
+javac -cp junit-platform-console-standalone.jar src/java/*.java tests/java/*.java
+java -jar junit-platform-console-standalone.jar -cp src/java:tests/java --scan-classpath
+```
+
+#### C#
+```bash
+# Requires NUnit
+nunit-console tests/csharp/BrailleTests.cs
+```
+
+#### JavaScript
+```bash
+# Requires Jest
+npm install jest
+npx jest tests/javascript/braille.test.js
+```
+
+---
+
+## 📖 UEB Grade 1 Reference
+
+### Key Indicators
+
+| Indicator | Braille | Unicode | Description |
+|-----------|---------|---------|-------------|
+| Capital | ⠠ | U+2820 | Dot 6 - Precedes capital letter |
+| Numeric | ⠼ | U+283C | Dots 3-4-5-6 - Starts numeric mode |
+| Grade 1 Symbol | ⠰ | U+2830 | Dot 5-6 - Used for parentheses prefix |
+
+### Number Mapping
+
+Numbers use the first ten letters (a-j) preceded by the numeric indicator:
+
+| Digit | Letter | Braille | Unicode |
+|-------|--------|---------|---------|
+| 1 | a | ⠁ | U+2801 |
+| 2 | b | ⠃ | U+2803 |
+| 3 | c | ⠉ | U+2809 |
+| 4 | d | ⠙ | U+2819 |
+| 5 | e | ⠑ | U+2811 |
+| 6 | f | ⠋ | U+280B |
+| 7 | g | ⠛ | U+281B |
+| 8 | h | ⠓ | U+2813 |
+| 9 | i | ⠊ | U+280A |
+| 0 | j | ⠚ | U+281A |
+
+### Numeric Mode Rules
+
+1. Numeric indicator (⠼) starts numeric mode
+2. Numeric mode continues through digits, commas, and decimal points
+3. Decimal points only maintain numeric mode if followed by a digit
+4. Hyphens, spaces, or letters terminate numeric mode
+5. Periods not followed by digits terminate numeric mode
+
+### Common Punctuation
+
+| Character | Braille | Unicode | Dots |
+|-----------|---------|---------|------|
+| Space | (space) | U+2800 | None |
+| Period | ⠲ | U+2832 | 2-5-6 |
+| Comma | ⠂ | U+2802 | 2 |
+| Exclamation | ⠖ | U+2816 | 2-3-5 |
+| Question | ⠦ | U+2826 | 2-3-6 |
+| Hyphen | ⠤ | U+2824 | 3-6 |
+| Apostrophe | ⠄ | U+2804 | 3 |
+| Opening Paren | ⠐⠣ | U+2810+2823 | 5, 1-2-6 |
+| Closing Paren | ⠐⠜ | U+2810+281C | 5, 3-4-5 |
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit pull requests or open issues for:
+
+- Bug fixes
+- Additional language implementations
+- Enhanced test coverage
+- Documentation improvements
+- UEB Grade 2 (contracted) support
+
+---
+
+## 📄 License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🔗 Resources
+
+- [Unified English Braille (UEB) Guidelines](http://www.iceb.org/ueb.html)
+- [Unicode Braille Patterns](https://en.wikipedia.org/wiki/Braille_Patterns)
+- [Perkins School for the Blind - UEB Resources](https://www.perkins.org/resource/unified-english-braille-ueb/)
+
+---
+
+## ⚠️ Important Notes
+
+- **Java and C# implementations**: While functional, these have been generated with AI assistance and require further testing in production environments
+- **Grade 2 Support**: This repository includes Grade 2 dictionary references in the `data/dictionaries/` folder for future implementation
+- **Limited Punctuation**: Current implementations support basic punctuation; additional symbols may require updates to the mapping dictionaries
+
+---
+
+**Last Updated**: December 2024
