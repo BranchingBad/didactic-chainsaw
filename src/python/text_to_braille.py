@@ -34,7 +34,6 @@ PUNCTUATION_SIGNS = {
 # 3. Indicators
 CAPITAL_LETTER_INDICATOR = '⠠' # Dot 6
 CAPITAL_WORD_INDICATOR = '⠠⠠' # Dot 6, Dot 6
-CAPITAL_TERMINATOR = 'bh'     # Dot 6, Dot 3
 NUMERIC_INDICATOR = '⠼'     # Dots 3, 4, 5, 6
 
 # 4. Number Characters (1-0 mapped to a-j)

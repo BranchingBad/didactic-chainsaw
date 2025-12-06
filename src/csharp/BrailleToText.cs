@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
-public static class BrailleToText // Renamed from BrailleToTextTranslator
+public static class BrailleToText 
 {
     private static readonly IReadOnlyDictionary<string, string> BrailleMap;
     private static readonly IReadOnlyDictionary<string, string> DigitMap;
 
     private const string CapitalIndicator = "⠠";   
     private const string NumberSign = "⠼";         
-    private const string Hyphen = "⠤";             
+    private const string Hyphen = "⠤";     
+    private const string Dot5 = "⠐";
 
-    static BrailleToText() // Constructor name updated
+    static BrailleToText() 
     {
         BrailleMap = new Dictionary<string, string>
         {
@@ -43,6 +44,7 @@ public static class BrailleToText // Renamed from BrailleToTextTranslator
         {
             string currentChar = uebInput[i].ToString();
 
+            // Check for Capital Letter Indicator (Dot 6)
             if (currentChar == CapitalIndicator)
             {
                 if (i + 1 < uebInput.Length)
@@ -59,6 +61,30 @@ public static class BrailleToText // Renamed from BrailleToTextTranslator
                 continue;
             }
 
+            // Check for Dot 5 (Parentheses prefix)
+            if (currentChar == Dot5)
+            {
+                if (i + 1 < uebInput.Length)
+                {
+                    string nextBraille = uebInput[i + 1].ToString();
+                    if (nextBraille == "⠣") // Opening paren
+                    {
+                        result.Append("(");
+                        i += 2;
+                        continue;
+                    }
+                    if (nextBraille == "⠜") // Closing paren
+                    {
+                        result.Append(")");
+                        i += 2;
+                        continue;
+                    }
+                }
+                i += 1; // Skip Dot 5 if not valid prefix here
+                continue;
+            }
+
+            // Check for Numeric Indicator
             if (currentChar == NumberSign)
             {
                 inNumericMode = true;
@@ -76,10 +102,31 @@ public static class BrailleToText // Renamed from BrailleToTextTranslator
                     } 
                     else if (currentChar == Hyphen)
                     {
+                        // Hyphen terminates numeric mode
+                        inNumericMode = false;
                         result.Append('-');
                     } 
-                    // Continue numeric mode for decimal (period) and comma
-                    else if (currentChar == "⠲" || currentChar == "⠂")
+                    else if (currentChar == "⠲") // Period / Decimal
+                    {
+                        // Lookahead for digit to see if this is a decimal point
+                        bool isDecimal = false;
+                        if (i + 1 < uebInput.Length)
+                        {
+                            string nextC = uebInput[i + 1].ToString();
+                            if (DigitMap.ContainsKey(nextC))
+                            {
+                                isDecimal = true;
+                            }
+                        }
+
+                        result.Append(textChar); // Append '.'
+
+                        if (!isDecimal)
+                        {
+                            inNumericMode = false;
+                        }
+                    }
+                    else if (currentChar == "⠂") // Comma (stays in numeric mode)
                     {
                         result.Append(textChar);
                     }

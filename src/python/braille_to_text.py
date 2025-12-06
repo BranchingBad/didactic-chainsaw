@@ -38,6 +38,7 @@ def translate_ueb_grade1_to_text(ueb_input):
     # 2. Indicators
     CAPITAL_INDICATOR = '⠠'   # Dot 6
     NUMBER_SIGN = '⠼'         # Dots 3456
+    GRADE1_INDICATOR = '⠐'    # Dot 5 (Used for parentheses prefix here)
 
     # Braille digits (a-j) to Text digits (1-0)
     DIGIT_MAP = {
@@ -64,23 +65,26 @@ def translate_ueb_grade1_to_text(ueb_input):
                     continue
             i += 1
             continue
+            
+        # Check for Grade 1 Indicator / Dot 5 Prefix (⠐) - Handling Parentheses
+        elif char == GRADE1_INDICATOR:
+            if i + 1 < len(ueb_input):
+                next_braille = ueb_input[i + 1]
+                if next_braille == '⠣': # Opening Parenthesis
+                    result.append('(')
+                    i += 2
+                    continue
+                elif next_braille == '⠜': # Closing Parenthesis
+                    result.append(')')
+                    i += 2
+                    continue
+            # If Dot 5 is standalone or followed by something else, treat as empty or generic
+            i += 1
+            continue
 
         # Check for Numeric Indicator (⠼)
         elif char == NUMBER_SIGN:
             in_numeric_mode = True
-            i += 1
-            continue
-
-        # Check for Decimal Point Legacy/Alternative (⠨) support (Optional, handled as period)
-        elif char == '⠨':
-            result.append('.')
-            if in_numeric_mode:
-                # In standard UEB, decimal continues number. 
-                # If this is used as a decimal point, we keep numeric mode? 
-                # For safety with the specific sample text which used it strangely, we'll assume it functions as a dot.
-                pass 
-            else:
-                pass
             i += 1
             continue
 
@@ -91,10 +95,28 @@ def translate_ueb_grade1_to_text(ueb_input):
             if in_numeric_mode:
                 if char in DIGIT_MAP:
                     result.append(DIGIT_MAP[char])
-                elif char == '⠤': # Hyphen maintains numeric mode
+                    
+                elif char == '⠤': # Hyphen
+                    # Hyphen terminates numeric mode in UEB (e.g. 1-a)
+                    in_numeric_mode = False
                     result.append('-')
-                elif char == '⠲' or char == '⠂': # Period (Decimal) or Comma maintains numeric mode
+                    
+                elif char == '⠲': # Period / Decimal
+                    # Lookahead: Only treat as decimal if next char is a digit
+                    is_decimal = False
+                    if i + 1 < len(ueb_input):
+                         next_c = ueb_input[i+1]
+                         if next_c in DIGIT_MAP:
+                             is_decimal = True
+                    
                     result.append(text_char)
+                    if not is_decimal:
+                        in_numeric_mode = False
+                        
+                elif char == '⠂': # Comma
+                    # Numeric mode continues for comma (digit separator)
+                    result.append(text_char)
+                    
                 else:
                     # Anything else ends numeric mode
                     in_numeric_mode = False
@@ -106,6 +128,7 @@ def translate_ueb_grade1_to_text(ueb_input):
                     in_capital_mode = False 
 
         else:
+            # Unknown character
             result.append('')
 
         i += 1

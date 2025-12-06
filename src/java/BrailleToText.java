@@ -1,7 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 
-public class BrailleToText { // Renamed from BrailleToTextTranslator
+public class BrailleToText { 
 
     private static final Map<String, String> BRAILLE_MAP = new HashMap<>();
     private static final Map<String, String> DIGIT_MAP = new HashMap<>();
@@ -9,7 +9,7 @@ public class BrailleToText { // Renamed from BrailleToTextTranslator
     private static final String CAPITAL_INDICATOR = "⠠";   
     private static final String NUMBER_SIGN = "⠼";         
     private static final String HYPHEN = "⠤";             
-    private static final String DECIMAL_POINT = "⠲"; // Standard UEB Decimal
+    private static final String DOT_5 = "⠐";
 
     static {
         BRAILLE_MAP.put("⠁", "a"); BRAILLE_MAP.put("⠃", "b"); BRAILLE_MAP.put("⠉", "c");
@@ -49,6 +49,7 @@ public class BrailleToText { // Renamed from BrailleToTextTranslator
         while (i < uebInput.length()) {
             String currentChar = String.valueOf(uebInput.charAt(i));
 
+            // Capital Indicator
             if (currentChar.equals(CAPITAL_INDICATOR)) {
                 if (i + 1 < uebInput.length()) {
                     String nextBraille = String.valueOf(uebInput.charAt(i + 1));
@@ -63,6 +64,26 @@ public class BrailleToText { // Renamed from BrailleToTextTranslator
                 continue;
             }
 
+            // Dot 5 (Parentheses Handling)
+            if (currentChar.equals(DOT_5)) {
+                if (i + 1 < uebInput.length()) {
+                    String nextBraille = String.valueOf(uebInput.charAt(i + 1));
+                    if (nextBraille.equals("⠣")) {
+                        result.append("(");
+                        i += 2;
+                        continue;
+                    }
+                    if (nextBraille.equals("⠜")) {
+                        result.append(")");
+                        i += 2;
+                        continue;
+                    }
+                }
+                i += 1;
+                continue;
+            }
+
+            // Numeric Indicator
             if (currentChar.equals(NUMBER_SIGN)) {
                 inNumericMode = true;
                 i += 1;
@@ -77,11 +98,27 @@ public class BrailleToText { // Renamed from BrailleToTextTranslator
                         result.append(DIGIT_MAP.get(currentChar));
                     } 
                     else if (currentChar.equals(HYPHEN)) {
+                        // Hyphen terminates numeric mode
+                        inNumericMode = false;
                         result.append('-');
                     } 
-                    // Allow decimal (period) and comma to persist numeric mode
-                    else if (currentChar.equals("⠲") || currentChar.equals("⠂")) {
-                        result.append(textChar);
+                    else if (currentChar.equals("⠲")) { // Period / Decimal
+                        // Lookahead check
+                        boolean isDecimal = false;
+                        if (i + 1 < uebInput.length()) {
+                            String nextC = String.valueOf(uebInput.charAt(i + 1));
+                            if (DIGIT_MAP.containsKey(nextC)) {
+                                isDecimal = true;
+                            }
+                        }
+                        result.append(".");
+                        if (!isDecimal) {
+                            inNumericMode = false;
+                        }
+                    }
+                    else if (currentChar.equals("⠂")) {
+                        // Comma maintains numeric mode
+                        result.append(",");
                     }
                     else {
                         inNumericMode = false;
@@ -98,6 +135,6 @@ public class BrailleToText { // Renamed from BrailleToTextTranslator
     }
     
     public static void main(String[] args) {
-         System.out.println(BrailleToText.translateUebGrade1ToText("⠼⠁⠃⠉⠲⠙⠑")); // Updated class reference
+         System.out.println(BrailleToText.translateUebGrade1ToText("⠼⠁⠃⠉⠲⠙⠑")); 
     }
 }
